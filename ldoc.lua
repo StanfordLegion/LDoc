@@ -111,6 +111,8 @@ local file_types = {
    ['.lua'] = lua,
    ['.ldoc'] = lua,
    ['.luadoc'] = lua,
+   ['.rg'] = lua,
+   ['.t'] = lua,
    ['.c'] = cc,
    ['.h'] = cc,
    ['.cpp'] = cc,
@@ -159,7 +161,7 @@ local function setup_kinds ()
 
    for k in pairs(kind_names) do
       if not known_types[k] then
-         quit("unknown item type "..tools.quote(k).." in kind_names")
+         quit("unknown item type "..tools.squote(k).." in kind_names")
       end
    end
 end
@@ -287,7 +289,7 @@ local function read_ldoc_config (fname)
    return directory, not_found
 end
 
-local quote = tools.quote
+local squote = tools.squote
 --- processing command line and preparing for output ---
 
 local F
@@ -320,7 +322,7 @@ local abspath = tools.abspath
 if args.file == '.' then
    local err
    config_dir,err = read_ldoc_config(args.config)
-   if err then quit("no "..quote(args.config).." found") end
+   if err then quit("no "..squote(args.config).." found") end
    local config_path = path.dirname(args.config)
    if config_path ~= '' then
       print('changing to directory',config_path)
@@ -342,7 +344,7 @@ else
    if args.config ~= 'config.ld' then
       local err
       config_dir,err = read_ldoc_config(args.config)
-      if err then quit("no "..quote(args.config).." found") end
+      if err then quit("no "..squote(args.config).." found") end
    end
    -- with user-provided file
    args.file = abspath(args.file)
@@ -505,7 +507,7 @@ elseif path.isfile(args.file) then
    process_file(args.file, file_list)
    if #file_list == 0 then quit "unsupported file extension" end
 else
-   quit ("file or directory does not exist: "..quote(args.file))
+   quit("file or directory does not exist: "..squote(args.file))
 end
 
 
@@ -674,7 +676,7 @@ if args.module then
       if not fun then
          fun = M.items.by_name[M.mod_name..':'..name]
       end
-      if not fun then quit(quote(name).." is not part of "..quote(args.file)) end
+      if not fun then quit(squote(name).." is not part of "..squote(args.file)) end
       fun:dump(true)
    end
    return
@@ -747,7 +749,7 @@ local function style_dir (sname)
       elseif type(style) == 'string' and (path.isdir(style) or match_bang(style)) then
          dir = style
       else
-         quit(quote(tostring(style)).." is not a directory")
+         quit(squote(tostring(style)).." is not a directory")
       end
       args[sname] = dir
    end

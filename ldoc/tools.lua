@@ -459,7 +459,7 @@ function M.space_skip_getter(tok)
    end
 end
 
-function M.quote (s)
+function M.squote (s)
    return "'"..s.."'"
 end
 
@@ -516,7 +516,7 @@ function M.expand_file_list (list, mask)
       elseif path.isfile(f) then
          process(f)
       else
-         quit("file or directory does not exist: "..M.quote(f))
+         quit("file or directory does not exist: "..M.squote(f))
       end
    end
    return files
